@@ -28,7 +28,7 @@ jobs:
       - name: Upload script to S3
         run: |
           echo "Uploading script to S3 bucket: $S3_BUCKET"
-          aws s3 cp scripts/hello_world.py s3://$S3_BUCKET/scripts/hello_world.py
+          aws s3 cp scripts/glue_job.py s3://$S3_BUCKET/scripts/hello_world.py
 
       - name: Start AWS Glue job
         run: |
