@@ -1,43 +1,25 @@
-name: Deploy AWS Glue Script
+name: Deploy AWS Glue Script - Dev
 
 on:
   push:
     branches:
       - develop
-      - test
-      - main
     paths:
       - scripts/**
 
 jobs:
-  deploy:
+  deploy-dev:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set environment variables based on branch
+      - name: Set Dev environment variables
         run: |
-          if [[ "${GITHUB_REF_NAME}" == "develop" ]]; then
-            echo "REGION=ap-south-1" >> $GITHUB_ENV
-            echo "S3_BUCKET=my-dev-bucket" >> $GITHUB_ENV
-            echo "GLUE_JOB_NAME=glue-hello-world-dev" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF_NAME}" == "test" ]]; then
-            echo "REGION=ap-south-1" >> $GITHUB_ENV
-            echo "S3_BUCKET=my-test-bucket" >> $GITHUB_ENV
-            echo "GLUE_JOB_NAME=glue-hello-world-test" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF_NAME}" == "main" ]]; then
-            echo "REGION=ap-south-1" >> $GITHUB_ENV
-            echo "S3_BUCKET=my-prod-bucket" >> $GITHUB_ENV
-            echo "GLUE_JOB_NAME=glue-hello-world-prod" >> $GITHUB_ENV
-          else
-            echo "Unknown branch, defaulting to dev config"
-            echo "REGION=ap-south-1" >> $GITHUB_ENV
-            echo "S3_BUCKET=my-dev-bucket" >> $GITHUB_ENV
-            echo "GLUE_JOB_NAME=glue-hello-world-dev" >> $GITHUB_ENV
-          fi
+          echo "REGION=ap-south-1" >> $GITHUB_ENV
+          echo "S3_BUCKET=my-dev-bucket" >> $GITHUB_ENV
+          echo "GLUE_JOB_NAME=glue-hello-world-dev" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
