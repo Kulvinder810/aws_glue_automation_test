@@ -1,0 +1,36 @@
+name: Deploy AWS Glue Script
+
+on:
+  push:
+    branches:
+      - develop
+      - test
+      - main
+    paths:
+      - scripts/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }} # Matches the branch name to environment
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload script to S3
+        run: |
+          echo "Uploading script to S3 bucket: ${{ secrets.S3_BUCKET }}"
+          aws s3 cp scripts/hello_world.py s3://${{ secrets.S3_BUCKET }}/scripts/hello_world.py
+
+      - name: Start AWS Glue job
+        run: |
+          echo "Starting AWS Glue job: ${{ secrets.GLUE_JOB_NAME }}"
+          aws glue start-job-run --job-name ${{ secrets.GLUE_JOB_NAME }}
