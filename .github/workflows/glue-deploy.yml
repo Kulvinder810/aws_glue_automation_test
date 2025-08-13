@@ -15,7 +15,7 @@ jobs:
       - name: Set Dev environment variables
         run: |
           echo "REGION=ap-south-1" >> $GITHUB_ENV
-          echo "S3_BUCKET=my-dev-bucket" >> $GITHUB_ENV
+          echo "S3_BUCKET=trendytech-tutorial-bucket" >> $GITHUB_ENV
           echo "GLUE_JOB_NAME=glue-hello-world-dev" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
